@@ -1,0 +1,8 @@
+1. ¿Cuándo es contraproducente crear un índice? (pista: piensa en tablas con muchas escrituras)
+Es contraproducente en tablas con un alto volumen de operaciones de escritura (INSERT, UPDATE, DELETE). Cada vez que se modifica un registro, el motor de la base de datos debe actualizar también la estructura del índice, lo que añade carga de procesamiento y penaliza el rendimiento general. Tampoco compensa en tablas muy pequeñas o en columnas con muy pocos valores distintos (baja cardinalidad).
+
+2. ¿Qué diferencia hay entre RANK() y DENSE_RANK()? Pon un ejemplo con los datos de la base de datos.
+Ambos asignan un puesto según un criterio de ordenación, pero difieren en el manejo de empates. RANK() deja saltos en la numeración tras un empate, mientras que DENSE_RANK() mantiene una secuencia continua. Ejemplo ordenando películas por su nota: si dos películas empatan con un 10 en la primera posición, RANK() asignará los puestos 1, 1, 3 a las tres primeras películas. Por el contrario, DENSE_RANK() asignará 1, 1, 2.
+
+3. ¿Por qué el trigger usa AFTER INSERT OR UPDATE OR DELETE en lugar de BEFORE?
+Porque las acciones del trigger (como actualizar una tabla de estadísticas, de registro o lanzar un webhook) deben basarse en datos consolidados y confirmados. Si se usa BEFORE, el trigger actúa antes de comprobar las restricciones (constraints) de la tabla. Esto generaría inconsistencias ejecutando acciones externas para una operación (INSERT/UPDATE/DELETE) que finalmente podría ser rechazada o fallar en la base de datos.
